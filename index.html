@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工地手套衝捲模擬器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f3f3f3;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input[type="number"] {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>工地手套衝捲模擬器</h2>
+    <p>
+      輸入捲軸成本（單位：雪花）
+    </p>
+    <label>10% 捲軸成本：<input id="cost10" type="number" value="27" /> 雪花</label><br />
+    <label>60% 捲軸成本：<input id="cost60" type="number" value="65" /> 雪花</label><br /><br />
+
+    <button onclick="simulate()">模擬衝裝</button>
+
+    <div id="output" style="margin-top:20px;"></div>
+  </div>
+
+  <script>
+    function simulate() {
+      const cost10 = parseFloat(document.getElementById("cost10").value);
+      const cost60 = parseFloat(document.getElementById("cost60").value);
+
+      let attempts = 100000; // 模擬次數
+      let totalCost = 0;
+      let successCount = 0;
+      let bestCombo = null;
+      let minAvgCost = Infinity;
+
+      const strategies = [
+        ["60","60","60","60","60"],
+        ["10","60","60","60","60"],
+        ["10","10","60","60","60"],
+        ["10","10","10","60","60"],
+        ["10","10","10","10","60"],
+        ["10","10","10","10","10"],
+      ];
+
+      const prob = { "10": 0.1, "60": 0.6 };
+      const atk = { "10": 3, "60": 2 };
+      const price = { "10": cost10, "60": cost60 };
+
+      for (const strategy of strategies) {
+        let total = 0;
+        let count = 0;
+        for (let i = 0; i < attempts; i++) {
+          let attack = 0;
+          let cost = 0;
+          for (const scroll of strategy) {
+            cost += price[scroll];
+            if (Math.random() < prob[scroll]) {
+              attack += atk[scroll];
+            }
+          }
+          if (attack >= 10) {
+            total += cost;
+            count++;
+          }
+        }
+        if (count > 0) {
+          let avgCost = total / count;
+          if (avgCost < minAvgCost) {
+            minAvgCost = avgCost;
+            successCount = count;
+            bestCombo = strategy;
+          }
+        }
+      }
+
+      let probability = (successCount / attempts) * 100;
+      let suggestedPrice = Math.ceil(minAvgCost * 1.15); // 建議販售價比成本高 15%
+
+      document.getElementById("output").innerHTML = `
+        <strong>最佳捲軸搭配：</strong> ${bestCombo.join(" → ")}<br />
+        <strong>成功率：</strong> ${probability.toFixed(2)}%<br />
+        <strong>平均成本：</strong> ${minAvgCost.toFixed(2)} 雪花<br />
+        <strong>建議販賣價格：</strong> ${suggestedPrice} 雪花（15% 利潤）
+      `;
+    }
+  </script>
+</body>
+</html>
