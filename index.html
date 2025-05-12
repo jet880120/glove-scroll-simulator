@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工地手套衝捲模擬器</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f3f3f3;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="number"] {
+      width: 100px;
+    }
+    button {
+      padding: 10px;
+      margin: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+    }
+    #output {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>工地手套衝捲模擬器</h2>
+    <p>
+      輸入捲軸成本（單位：雪花）
+    </p>
+    <label>10% 捲軸成本：<input id="cost10" type="number" value="27" /> 雪花</label><br />
+    <label>60% 捲軸成本：<input id="cost60" type="number" value="65" /> 雪花</label><br /><br />
+    <button onclick="simulateSuccess()">成功</button>
+    <button onclick="simulateFail()">失敗</button>
+    <br />
+    <p><strong>目前攻擊力：</strong> <span id="currentAtk">4</span></p>
+    <p><strong>總成本：</strong> <span id="totalCost">0</span> 雪花</p>
+    <p><strong>已經使用的捲軸：</strong> <span id="usedScr
